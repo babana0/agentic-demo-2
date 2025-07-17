@@ -23,20 +23,20 @@ function App() {
       setStatus("⚠️ Please enter your email.");
       return;
     }
-    if (!claimForm) {
-      setStatus("⚠️ Please upload the Claim Form.");
-      return;
-    }
-    if (!pdrmReport) {
-      setStatus("⚠️ Please upload the PDRM Report.");
-      return;
-    }
+    // if (!claimForm) {
+    //   setStatus("⚠️ Please upload the Claim Form.");
+    //   return;
+    // }
+    // if (!pdrmReport) {
+    //   setStatus("⚠️ Please upload the PDRM Report.");
+    //   return;
+    // }
 
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
-    formData.append("claim_form", claimForm);
-    formData.append("pdrm_report", pdrmReport);
+    if (claimForm) formData.append("claim_form", claimForm);
+    if (pdrmReport) formData.append("pdrm_report", pdrmReport);
 
     try {
       setStatus("⏳ Uploading...");
@@ -138,10 +138,10 @@ function App() {
           onClick={handleUpload}
           style={{
             ...styles.uploadBtn,
-            backgroundColor: name && email && claimForm && pdrmReport ? "#3b82f6" : "#cbd5e1",
-            cursor: name && email && claimForm && pdrmReport ? "pointer" : "not-allowed",
+            backgroundColor: name && email ? "#3b82f6" : "#cbd5e1",
+            cursor: name && email ? "pointer" : "not-allowed",
           }}
-          disabled={!name || !email || !claimForm || !pdrmReport}
+          disabled={!name || !email}
         >
           🚀 Submit Claim
         </button>
