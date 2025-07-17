@@ -35,8 +35,8 @@ function App() {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
-    formData.append("claimForm", claimForm);
-    formData.append("pdrmReport", pdrmReport);
+    formData.append("claim_form", claimForm);
+    formData.append("pdrm_report", pdrmReport);
 
     try {
       setStatus("⏳ Uploading...");
