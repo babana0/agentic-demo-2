@@ -15,11 +15,10 @@ function App() {
   const productionUrl = "https://sem89.app.n8n.cloud/webhook/new-claim/submit";
   const uploadUrl = useProduction ? productionUrl : devUrl;
 
-  const handleChange = (e) => {
+  const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const imageFiles = selectedFiles.filter((file) => file.type.startsWith("image/"));
     setImages((prev) => [...prev, ...imageFiles]);
-    setStatus("");
   };
 
   const handleRemoveImage = (index) => {
@@ -35,19 +34,6 @@ function App() {
       setStatus("⚠️ Please enter your email.");
       return;
     }
-
-    if (images.length === 0) {
-      setStatus("⚠️ Please select at least one image.");
-      return;
-    }
-    // if (!claimForm) {
-    //   setStatus("⚠️ Please upload the Claim Form.");
-    //   return;
-    // }
-    // if (!pdrmReport) {
-    //   setStatus("⚠️ Please upload the PDRM Report.");
-    //   return;
-    // }
 
     const formData = new FormData();
     formData.append("name", name);
@@ -66,6 +52,7 @@ function App() {
       setEmail("");
       setClaimForm(null);
       setPdrmReport(null);
+      setImages([]);
     } catch (err) {
       setStatus("❌ Upload failed.");
     }
@@ -151,26 +138,28 @@ function App() {
           {pdrmReport && <div style={{ marginTop: "0.5rem" }}>{renderFilePreview(pdrmReport)}</div>}
         </div>
 
-        {/* File Upload */}
+        {/* Additional Images Upload */}
         <div style={styles.section}>
-          <label style={styles.label}>Upload Images</label>
-          <input type="file" accept="image/*" multiple onChange={handleChange} style={styles.fileInput} />
+          <label style={styles.label}>Upload Additional Images</label>
+          <input type="file" accept="image/*" multiple onChange={handleImageChange} style={styles.fileInput} />
         </div>
 
-        {/* Previews */}
         {images.length > 0 && (
           <div style={styles.grid}>
-            {images.map((file, index) => (
-              <div key={index} style={styles.card}>
-                <div onClick={() => setZoomedImage(URL.createObjectURL(file))} style={{ cursor: "zoom-in" }}>
-                  <img src={URL.createObjectURL(file)} alt={`preview-${index}`} style={styles.image} />
+            {images.map((file, index) => {
+              const url = URL.createObjectURL(file);
+              return (
+                <div key={index} style={styles.card}>
+                  <div onClick={() => setZoomedImage(url)} style={{ cursor: "zoom-in" }}>
+                    <img src={url} alt={`preview-${index}`} style={styles.image} />
+                  </div>
+                  <p style={styles.filename}>{file.name}</p>
+                  <button onClick={() => handleRemoveImage(index)} style={styles.removeBtn}>
+                    ✖
+                  </button>
                 </div>
-                <p style={styles.filename}>{file.name}</p>
-                <button onClick={() => handleRemoveImage(index)} style={styles.removeBtn}>
-                  ✖
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
@@ -325,6 +314,47 @@ const styles = {
     maxHeight: "90vh",
     borderRadius: "12px",
     boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+    gap: "1rem",
+    marginBottom: "1.5rem",
+  },
+  card: {
+    position: "relative",
+    backgroundColor: "#f1f5f9",
+    borderRadius: "10px",
+    padding: "0.5rem",
+    border: "1px solid #cbd5e1",
+    textAlign: "center",
+  },
+  image: {
+    width: "100%",
+    height: "100px",
+    objectFit: "cover",
+    borderRadius: "6px",
+    marginBottom: "0.5rem",
+  },
+  filename: {
+    fontSize: "0.75rem",
+    color: "#475569",
+    wordBreak: "break-word",
+  },
+  removeBtn: {
+    position: "absolute",
+    top: "6px",
+    right: "6px",
+    background: "#ef4444",
+    color: "#fff",
+    border: "none",
+    borderRadius: "50%",
+    width: "24px",
+    height: "24px",
+    cursor: "pointer",
+    fontSize: "14px",
+    lineHeight: "24px",
+    padding: 0,
   },
 };
 
