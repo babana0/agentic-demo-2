@@ -40,7 +40,9 @@ function App() {
     formData.append("email", email);
     if (claimForm) formData.append("claim_form", claimForm);
     if (pdrmReport) formData.append("pdrm_report", pdrmReport);
-    images.forEach((img) => formData.append("images", img));
+    images.forEach((img, i) => {
+      formData.append(`supporting_photo_${i + 1}`, img);
+    });
 
     try {
       setStatus("⏳ Uploading...");
