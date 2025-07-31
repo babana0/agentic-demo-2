@@ -6,6 +6,9 @@ function App() {
   const [email, setEmail] = useState("");
   const [claimForm, setClaimForm] = useState(null);
   const [pdrmReport, setPdrmReport] = useState(null);
+  const [workshopReport, setWorkshopReport] = useState(null);
+  const [drivingLicense, setDrivingLicense] = useState(null);
+  const [identityCard, setIdentityCard] = useState(null);
   const [images, setImages] = useState([]);
   const [status, setStatus] = useState("");
   const [useProduction, setUseProduction] = useState(true);
@@ -40,6 +43,9 @@ function App() {
     formData.append("email", email);
     if (claimForm) formData.append("claim_form", claimForm);
     if (pdrmReport) formData.append("pdrm_report", pdrmReport);
+    if (workshopReport) formData.append("workshop_report", workshopReport);
+    if (drivingLicense) formData.append("driving_license", drivingLicense);
+    if (identityCard) formData.append("identity_card", identityCard);
     images.forEach((img, i) => {
       formData.append(`supporting_photo_${i + 1}`, img);
     });
@@ -138,6 +144,42 @@ function App() {
             style={styles.fileInput}
           />
           {pdrmReport && <div style={{ marginTop: "0.5rem" }}>{renderFilePreview(pdrmReport)}</div>}
+        </div>
+
+        {/* Workshop Report Upload */}
+        <div style={styles.section}>
+          <label style={styles.label}>Upload Workshop Report</label>
+          <input
+            type="file"
+            accept=".pdf,image/*"
+            onChange={(e) => setWorkshopReport(e.target.files[0])}
+            style={styles.fileInput}
+          />
+          {workshopReport && <div style={{ marginTop: "0.5rem" }}>{renderFilePreview(workshopReport)}</div>}
+        </div>
+
+        {/* Driving License Upload */}
+        <div style={styles.section}>
+          <label style={styles.label}>Upload Driving License</label>
+          <input
+            type="file"
+            accept=".pdf,image/*"
+            onChange={(e) => setDrivingLicense(e.target.files[0])}
+            style={styles.fileInput}
+          />
+          {drivingLicense && <div style={{ marginTop: "0.5rem" }}>{renderFilePreview(drivingLicense)}</div>}
+        </div>
+
+        {/* Identity Card Upload */}
+        <div style={styles.section}>
+          <label style={styles.label}>Upload Identity Card</label>
+          <input
+            type="file"
+            accept=".pdf,image/*"
+            onChange={(e) => setIdentityCard(e.target.files[0])}
+            style={styles.fileInput}
+          />
+          {identityCard && <div style={{ marginTop: "0.5rem" }}>{renderFilePreview(identityCard)}</div>}
         </div>
 
         {/* Additional Images Upload */}
